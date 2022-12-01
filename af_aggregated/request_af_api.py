@@ -1,15 +1,41 @@
-import inspect
+import requests
+import pandas as pd
+import io
+import time
 
-""" получаем имена переменных """
-
-
-def retrieve_name(var):
-    for fi in reversed(inspect.stack()):
-        names = [var_name for var_name, var_val in fi.frame.f_locals.items() if var_val is var]
-        if len(names) > 0:
-            return names[0]
+pd.set_option('display.max_columns', 50)
 
 
-media_source = [retrieve_name(x) for x in bvc]
+def get_af_agr_df(med_sour, app_id, token, from_date, to_date):
 
-media_source
+    def pull_request(med_sour, app_id, token, from_date, to_date):
+        if med_sour == 'Facebook_Ads':
+            url = f"https://hq1.appsflyer.com/api/agg-data/export/app/{app_id}/partners_report/v5?from={from_date}&to={to_date}&media_source={med_sour}&category=facebook"
+        else:
+            url = f"https://hq1.appsflyer.com/api/agg-data/export/app/{app_id}/partners_report/v5?from={from_date}&to={to_date}&media_source={med_sour}&category=standard"
+
+        headers = {
+            "accept": "text/csv",
+            "authorization": token
+        }
+
+        urlData = requests.get(url, headers=headers).content
+        rawData = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
+        return rawData
+
+    df_agre = None
+    if type(med_sour) == list:
+        for i in range(len(med_sour)):
+            if str(type(df_agre)) == "<class 'NoneType'>":
+                df_agre = pull_request(med_sour[i], app_id, token, from_date, to_date)
+            else:
+                time.sleep(60)
+                df_agre = pd.concat([df_agre, pull_request(med_sour[i], app_id, token, from_date, to_date)])
+    else:
+        print(15)
+
+    return df_agre
+
+
+if __name__ == '__main__':
+    print(1)
