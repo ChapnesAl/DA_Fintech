@@ -1,7 +1,8 @@
 from Appsflyer_api.af_aggregated.af_extra_func import retrieve_name
 from af_tokens import token_tezbol, id_andr_tezbol
-from Appsflyer_api.af_shorts_asks import af_aggregated_short
 from Appsflyer_api.af_aggregated.af_extra_func import retrieve_name
+from Appsflyer_api.af_shorts_asks import af_unit_short, af_unit_short_kzt
+
 
 
 """ Date """
@@ -27,6 +28,8 @@ sources = [Organic, googleadwords_int, Facebook_Ads]
 media_source = [retrieve_name(x) for x in sources]
 
 if __name__ == '__main__':
-    print(af_aggregated_short(media_source, app_id, token, from_date, to_date, sources))
+    # print(af_unit_short(media_source, app_id, token, from_date, to_date, sources))
+    print(af_unit_short_kzt(media_source, app_id, token, from_date, to_date, sources))
+
 
 
