@@ -3,10 +3,12 @@ import pandas as pd
 import io
 import time
 
-pd.set_option('display.max_columns', 50)
+pd.set_option('display.max_rows', 1000)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 
 
-def get_af_agr_df(med_sour, app_id, token, from_date, to_date):
+def pull_af_agr_df(med_sour, app_id, token, from_date, to_date):
 
     def pull_request(med_sour, app_id, token, from_date, to_date):
         if med_sour == 'Facebook_Ads':
