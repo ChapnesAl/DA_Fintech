@@ -1,6 +1,7 @@
 from Appsflyer_api.af_aggregated.request_af_api import pull_af_agr_df
 import pandas as pd
 import numpy as np
+
 np.seterr(divide='ignore', invalid='ignore')
 
 pd.set_option('display.max_rows', 1000)
@@ -21,30 +22,78 @@ def clear_af_aggr(df):
 
     df = dfx.copy()
 
-    df = df.drop([
-        'Impressions',
-        'CTR',
-        'Conversion Rate',
-        'Total Revenue',
-        'Total Cost',
-        'af_login (Unique users)',
-        'loan_accepted (Unique users)',
-        'install_kreditomat (Event counter)',
-        'ROI',
-        'ARPU',
-        'Loyal Users',
-        'Loyal Users/Installs',
-        'loan_rejected (Unique users)',
-        'Average eCPI',
-        'install_kreditomat (Unique users)',
-        'af_complete_registration (Unique users)',
-        'submit_loan_application (Unique users)',
-        'af_complete_registration (Sales in USD)',
-        'af_login (Sales in USD)',
-        'install_kreditomat (Sales in USD)',
-        'loan_accepted (Sales in USD)',
-        'loan_rejected (Sales in USD)',
-        'submit_loan_application (Sales in USD)'], axis=1)
+    try:
+        df = df.drop([
+            'Impressions',
+            'CTR',
+            'Conversion Rate',
+            'Total Revenue',
+            'Total Cost',
+            'af_login (Unique users)',
+            'loan_accepted (Unique users)',
+            'install_kreditomat (Event counter)',
+            'ROI',
+            'ARPU',
+            'Loyal Users',
+            'Loyal Users/Installs',
+            'loan_rejected (Unique users)',
+            'Average eCPI',
+            'install_kreditomat (Unique users)',
+            'af_complete_registration (Unique users)',
+            'submit_loan_application (Unique users)'], axis=1)
+
+
+    except:
+        df = df.drop([
+            'Impressions',
+            'CTR',
+            'Conversion Rate',
+            'Total Revenue',
+            'Total Cost',
+            'af_login (Unique users)',
+            'loan_accepted (Unique users)',
+            'install_kreditomat (Event counter)',
+            'ROI',
+            'ARPU',
+            'Loyal Users',
+            'Loyal Users/Installs',
+            'loan_rejected (Unique users)',
+            'Average eCPI',
+            'install_kreditomat (Unique users)',
+            'submit_loan_application (Unique users)'], axis=1)
+
+    try:
+        if 'af_login (Sales in KZT)' in df.columns:
+            df = df.drop([
+                'af_complete_registration (Sales in KZT)',
+                'af_login (Sales in KZT)',
+                'install_kreditomat (Sales in KZT)',
+                'loan_accepted (Sales in KZT)',
+                'loan_rejected (Sales in KZT)',
+                'submit_loan_application (Sales in KZT)'], axis=1)
+        else:
+            df = df.drop([
+                'af_complete_registration (Sales in USD)',
+                'af_login (Sales in USD)',
+                'install_kreditomat (Sales in USD)',
+                'loan_accepted (Sales in USD)',
+                'loan_rejected (Sales in USD)',
+                'submit_loan_application (Sales in USD)'], axis=1)
+    except:
+        if 'af_login (Sales in KZT)' in df.columns:
+            df = df.drop([
+                'af_login (Sales in KZT)',
+                'install_kreditomat (Sales in KZT)',
+                'loan_accepted (Sales in KZT)',
+                'loan_rejected (Sales in KZT)',
+                'submit_loan_application (Sales in KZT)'], axis=1)
+        else:
+            df = df.drop([
+                'af_login (Sales in USD)',
+                'install_kreditomat (Sales in USD)',
+                'loan_accepted (Sales in USD)',
+                'loan_rejected (Sales in USD)',
+                'submit_loan_application (Sales in USD)'], axis=1)
 
     # transposition columns without BUDGET
     df = df[['Sessions', 'Installs', 'af_login (Event counter)', 'submit_loan_application (Event counter)',
@@ -158,6 +207,7 @@ def af_agr_correct_placement(df):
 
 
 from Appsflyer_api.af_aggregated.af_extra_func import retrieve_name
+
 # from af_tokens import token_tezbol, id_andr_tezbol
 # from Appsflyer_api.af_aggregated.af_extra_func import retrieve_name
 #

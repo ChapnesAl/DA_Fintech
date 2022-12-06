@@ -34,7 +34,7 @@ def pull_af_agr_df(med_sour, app_id, token, from_date, to_date):
                 time.sleep(60)
                 df_agre = pd.concat([df_agre, pull_request(med_sour[i], app_id, token, from_date, to_date)])
     else:
-        print(15)
+        print('Проблема в запросе API Appsflyer')
 
     return df_agre
 

@@ -6,3 +6,7 @@ def retrieve_name(var):
         names = [var_name for var_name, var_val in fi.frame.f_locals.items() if var_val is var]
         if len(names) > 0:
             return names[0]
+
+
+def pd_array_extract(df):
+    return df

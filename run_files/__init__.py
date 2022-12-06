@@ -1,2 +1,2 @@
-from run_files import af_agr_run
+from run_files import run_af_agr
 
