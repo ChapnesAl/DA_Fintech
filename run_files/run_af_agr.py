@@ -5,8 +5,8 @@ from af_tokens import token_tezbol, id_andr_tezbol, token_kreditomat_kz, token_c
 
 
 """ Date """
-from_date = '2022-10-01'
-to_date = '2022-10-31'
+from_date = '2022-12-08'
+to_date = '2022-12-08'
 
 
 """ Token and app ID"""
@@ -19,7 +19,7 @@ token = token_tezbol
 
 """ Sources - Budget, Views, Clicks"""
 Organic = [0, 0, 0]
-googleadwords_int = [7431, 2715423, 54379]
+googleadwords_int = [4310, 1510000, 39000]
 Facebook_Ads = [100, 6000, 1000]
 
 
@@ -35,6 +35,8 @@ if __name__ == '__main__':
     # print(af_unit_short_kzt(media_source, app_id, token, from_date, to_date, sources))
     x = af_unit_short_kzt(media_source, app_id, token, from_date, to_date, sources)
     print(x)
+    # x.index.name = 'Sources'
+    x = x.rename_axis('Sources').reset_index()
     x.to_excel(r'C:\Users\PC\Desktop\DataAnalytics\Parser\result.xlsx', index=False)
 
 

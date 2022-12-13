@@ -1,4 +1,5 @@
 from Appsflyer_api.af_events_data.reques_af_api_events import pull_af_all_events_non_org
+from Appsflyer_api.af_extra_func import array_parsing
 import pandas as pd
 
 
@@ -11,7 +12,16 @@ class AF_events_data:
         self.to_date = to_date
 
     def get_all_events(self):
-        return pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
+        df = pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
+        # извлечение колонок из массива Event Value
+        key_1 = 'ClientState'
+        key_2 = 'loam_amount'
+        key_3 = 'loan_period'
+        df[key_1] = array_parsing(key_1, df)
+        df[key_2] = array_parsing(key_2, df)
+        df[key_3] = array_parsing(key_3, df)
+
+        return df
 
     def get_loan_rejected_cuID(self):
         df = pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
@@ -57,3 +67,14 @@ class AF_events_data:
                                               index=False)
 
         return event['Customer User ID']
+
+    def get_channels(self):
+        df = pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
+        sources = list(df['Media Source'].unique())
+        if 'restricted' in sources:
+            ind = sources.index('restricted')
+            sources[ind] = 'Facebook_Ads'
+        else:
+            pass
+
+        return sources

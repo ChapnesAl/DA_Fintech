@@ -40,7 +40,7 @@ def clear_af_aggr(df):
             'Average eCPI',
             'install_kreditomat (Unique users)',
             'af_complete_registration (Unique users)',
-            'submit_loan_application (Unique users)'], axis=1)
+            'submit_loan_application (Event counter)'], axis=1)
 
 
     except:
@@ -60,7 +60,7 @@ def clear_af_aggr(df):
             'loan_rejected (Unique users)',
             'Average eCPI',
             'install_kreditomat (Unique users)',
-            'submit_loan_application (Unique users)'], axis=1)
+            'submit_loan_application (Event counter)'], axis=1)
 
     try:
         if 'af_login (Sales in KZT)' in df.columns:
@@ -96,14 +96,14 @@ def clear_af_aggr(df):
                 'submit_loan_application (Sales in USD)'], axis=1)
 
     # transposition columns without BUDGET
-    df = df[['Sessions', 'Installs', 'af_login (Event counter)', 'submit_loan_application (Event counter)',
+    df = df[['Sessions', 'Installs', 'af_login (Event counter)', 'submit_loan_application (Unique users)',
              'loan_rejected (Event counter)', 'loan_accepted (Event counter)']]
     return df
 
 
 def clarity_af_aggr(df):
     # transposition columns without BUDGET
-    df = df[['Sessions', 'Installs', 'af_login (Event counter)', 'submit_loan_application (Event counter)',
+    df = df[['Sessions', 'Installs', 'af_login (Event counter)', 'submit_loan_application (Unique users)',
              'loan_rejected (Event counter)', 'loan_accepted (Event counter)']]
 
     """ функция по сокращению символов во float """
@@ -113,23 +113,28 @@ def clarity_af_aggr(df):
     df.insert(2, "Installs_to_Login %", itlo, True)
 
     # получаем Installs_to_Submit
-    itsu = trunc(df[['submit_loan_application (Event counter)']].to_numpy() / (df[['Installs']].to_numpy() / 100),
+    itsu = trunc(df[['submit_loan_application (Unique users)']].to_numpy() / (df[['Installs']].to_numpy() / 100),
                  decs=1)
     df.insert(4, "Installs_to_Submit %", itsu, True)
 
-    # получаем Submit_to_Rejected
-    stre = trunc(df[['loan_rejected (Event counter)']].to_numpy() / (
-            df[['submit_loan_application (Event counter)']].to_numpy() / 100), decs=1)
-    df.insert(6, "Submit_to_Rejected %", stre, True)
+    # получаем Installs_to_Accepted
+    itap = trunc(df[['loan_accepted (Event counter)']].to_numpy() / (df[['Installs']].to_numpy() / 100),
+                 decs=1)
+    df.insert(4, "Installs_to_Accepted %", itap, True)
 
-    # получаем Submit_to_Accepted
-    stap = trunc(df[['loan_accepted (Event counter)']].to_numpy() / (
-            df[['submit_loan_application (Event counter)']].to_numpy() / 100), decs=1)
-    df.insert(8, "Submit_to_Accepted %", stap, True)
+    # # получаем Submit_to_Rejected
+    # stre = trunc(df[['loan_rejected (Event counter)']].to_numpy() / (
+    #         df[['submit_loan_application (Unique users)']].to_numpy() / 100), decs=1)
+    # df.insert(6, "Submit_to_Rejected %", stre, True)
 
-    # получаем Submit_to_Lost
-    stl = (100 - (stre + stap))
-    df.insert(10, "Submit_to_Lost %", stl, True)
+    # # получаем Submit_to_Accepted
+    # stap = trunc(df[['loan_accepted (Event counter)']].to_numpy() / (
+    #         df[['submit_loan_application (Unique users)']].to_numpy() / 100), decs=1)
+    # df.insert(8, "Submit_to_Accepted %", stap, True)
+
+    # # получаем Submit_to_Lost
+    # stl = (100 - (stre + stap))
+    # df.insert(10, "Submit_to_Lost %", stl, True)
 
     return df
 
@@ -169,7 +174,7 @@ def vanity_af_aggr(df, med_sour, sources):
     df.insert(3, "CPAp", cpap, True)
 
     # получаем CPSu
-    cpsu = trunc(df[['Budget']].to_numpy() / df[['submit_loan_application (Event counter)']].to_numpy(), decs=2)
+    cpsu = trunc(df[['Budget']].to_numpy() / df[['submit_loan_application (Unique users)']].to_numpy(), decs=2)
     df.insert(3, "CPSu", cpsu, True)
 
     # получаем CPI
@@ -194,14 +199,15 @@ def af_agr_correct_placement(df):
              'Installs_to_Login %',
              'af_login (Event counter)',
              'Installs_to_Submit %',
-             'submit_loan_application (Event counter)',
+             'submit_loan_application (Unique users)',
              'CPSu',
-             'Submit_to_Rejected %',
+             # 'Submit_to_Rejected %',
              'loan_rejected (Event counter)',
-             'Submit_to_Accepted %',
+             # 'Submit_to_Accepted %',
+             'Installs_to_Accepted %',
              'loan_accepted (Event counter)',
              'CPAp',
-             'Submit_to_Lost %'
+             # 'Submit_to_Lost %'
              ]]
     return df
 

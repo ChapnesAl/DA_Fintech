@@ -1,4 +1,6 @@
 import inspect
+import ast
+import numpy as np
 
 
 def retrieve_name(var):
@@ -8,5 +10,17 @@ def retrieve_name(var):
             return names[0]
 
 
-def pd_array_extract(df):
-    return df
+def array_parsing(key, df):
+    value_list = []
+    for i in range(len(df)):
+        if 'null' in df.iloc[i, 5]:
+            df.iloc[i, 5] = df.iloc[i, 5].replace('null', 'None')
+        else:
+            pass
+        element = ast.literal_eval(str(df.iloc[i, 5]))
+        if key in element:
+            element = element.get(key)
+            value_list.append(element)
+        else:
+            value_list.append(np.NaN)
+    return value_list

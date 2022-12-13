@@ -2,8 +2,8 @@ from af_tokens import token_tezbol, id_andr_tezbol
 from Appsflyer_api.af_events_data.ask_af_events import AF_events_data
 
 """ Date """
-from_date = '2022-12-06'
-to_date = '2022-12-06'
+from_date = '2022-12-13'
+to_date = '2022-12-13'
 
 
 """ Token and app ID"""
@@ -16,4 +16,4 @@ token = token_tezbol
 
 
 if __name__ == '__main__':
-    print(AF_events_data(app_id, token, to_date, from_date).get_loan_rejected())
+    print(AF_events_data(app_id, token, to_date, from_date).get_channels())
