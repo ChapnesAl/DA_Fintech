@@ -68,6 +68,19 @@ class AF_events_data:
 
         return event['Customer User ID']
 
+    def get_sumbit_cuID_events(self):
+        df = pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
+        event = df.loc[df['Event Name'] == 'submit_loan_application']
+
+        sorted = event.sort_values('Customer User ID', ascending=True)
+        event = sorted.groupby('Customer User ID').first().reset_index()
+
+        event = event.drop_duplicates(subset='Customer User ID')
+        event[['Customer User ID', 'Event Time']].to_excel(r'C:/Users/PC/Desktop/DataAnalytics/Events/sub_customerID.xlsx',
+                                              index=False)
+
+        return event[['Customer User ID', 'Event Time']]
+
     def get_channels(self):
         df = pull_af_all_events_non_org(self.app_id, self.token, self.from_date, self.to_date)
         sources = list(df['Media Source'].unique())
